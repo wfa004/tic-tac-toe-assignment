@@ -19,27 +19,24 @@ fun main() {
             try {
                 print("Enter row number: ")
                 row = readlnOrNull()?.toInt()
-                if (row !in 0..max) {
-                    println("The row number must be between 0 and $max")
-                    println("Try again!")
-                    continue
-                }
                 print("Enter column number: ")
                 col = readlnOrNull()?.toInt()
-                if (col !in 0..max) {
-                    println("The column number must be between 0 and $max")
+
+                if (row != null && col != null
+                    && game.isValidMove(row, col)) {
+                    validMove = true
+                    game.placePiece(row, col, currentPlayer)
+                }else {
+                    println("Invalid position")
                     println("Try again!")
                     continue
                 }
-                validMove = true
             } catch (e: NumberFormatException) {
                 println("You did not enter a number")
                 println("Try again!")
             }
         }
-        if (row != null && col != null ) {
-            game.placePiece(row, col, currentPlayer)
-        }
+
         if (game.isGameOver) {
             println("New game? Type 'yes' or 'no'")
             val answer: String? = readlnOrNull()

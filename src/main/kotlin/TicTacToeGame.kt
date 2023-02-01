@@ -81,9 +81,7 @@ class TicTacToeGame() {
     }
 
     fun placePiece(x: Int, y: Int, piece: String) {
-        if (!isGameOver
-            && isValidMove(x, y)
-            && gameBoard[x][y] == empty) {
+        if (!isGameOver) {
             moveCount++
             gameBoard[x][y] = piece
             printGameBoard()
@@ -96,13 +94,11 @@ class TicTacToeGame() {
             }
         } else if (gameBoard[x][y] != empty) {
             println("Position is already occupied")
-        } else {
-            println("Invalid position")
-        }
     }
+        }
 
-    private fun isValidMove(x: Int, y: Int): Boolean {
-        return ((x in 0 until size) && (y in 0 until size))
+    fun isValidMove(x: Int, y: Int): Boolean {
+        return ((x in 0 until size) && (y in 0 until size) && (gameBoard[x][y] == empty))
     }
 
     private fun isDraw(): Boolean {
