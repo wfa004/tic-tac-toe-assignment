@@ -9,7 +9,7 @@ fun main() {
     while (!game.isGameOver) {
         takeTurns()
         println("$currentPlayer's turn")
-        print("Enter row number: ")
+        print("TEST123  Enter row number: ")
         val row: Int? = readlnOrNull()?.toInt()
         print("Enter column number: ")
         val col: Int? = readlnOrNull()?.toInt()
