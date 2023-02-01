@@ -13,6 +13,7 @@ fun main() {
         val row: Int? = readlnOrNull()?.toInt()
         print("Enter column number: ")
         val col: Int? = readlnOrNull()?.toInt()
+
         if (row != null && col != null) {
             game.placePiece(row, col, currentPlayer)
         }

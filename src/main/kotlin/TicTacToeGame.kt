@@ -62,6 +62,8 @@ class TicTacToeGame() {
     }
 
     fun printGameBoard() {
+        println("  0    1    2")
+        var colNr = 0
         gameBoard.forEach { row ->
             row.forEach { element ->
                 if (element == empty) {
@@ -71,6 +73,8 @@ class TicTacToeGame() {
 
                 }
             }
+            println("$colNr")
+            colNr += 1
             println()
         }
         println()
