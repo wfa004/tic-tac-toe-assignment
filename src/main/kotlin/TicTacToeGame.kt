@@ -2,7 +2,7 @@ import kotlin.math.pow
 
 class TicTacToeGame() {
 
-    private var size = 3
+    open var size = 3
     private val empty = "___"
     private var moveCount = 0
     var isGameOver = false

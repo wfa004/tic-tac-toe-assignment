@@ -9,12 +9,35 @@ fun main() {
     while (!game.isGameOver) {
         takeTurns()
         println("$currentPlayer's turn")
-        print("Enter row number: ")
-        val row: Int? = readlnOrNull()?.toInt()
-        print("Enter column number: ")
-        val col: Int? = readlnOrNull()?.toInt()
 
-        if (row != null && col != null) {
+        var row: Int? = -1
+        var col: Int? = -1
+        val max: Int = game.size -1
+
+        var validMove: Boolean = false
+        while (!validMove) {
+            try {
+                print("Enter row number: ")
+                row = readlnOrNull()?.toInt()
+                if (row !in 0..max) {
+                    println("The row number must be between 0 and $max")
+                    println("Try again!")
+                    continue
+                }
+                print("Enter column number: ")
+                col = readlnOrNull()?.toInt()
+                if (col !in 0..max) {
+                    println("The column number must be between 0 and $max")
+                    println("Try again!")
+                    continue
+                }
+                validMove = true
+            } catch (e: NumberFormatException) {
+                println("You did not enter a number")
+                println("Try again!")
+            }
+        }
+        if (row != null && col != null ) {
             game.placePiece(row, col, currentPlayer)
         }
         if (game.isGameOver) {
