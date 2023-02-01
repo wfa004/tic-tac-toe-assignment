@@ -12,7 +12,6 @@ fun main() {
 
         var row: Int? = -1
         var col: Int? = -1
-        val max: Int = game.size -1
 
         var validMove: Boolean = false
         while (!validMove) {
