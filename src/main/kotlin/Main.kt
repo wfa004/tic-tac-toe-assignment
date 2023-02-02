@@ -9,13 +9,33 @@ fun main() {
     while (!game.isGameOver) {
         takeTurns()
         println("$currentPlayer's turn")
-        print("Enter row number: ")
-        val row: Int? = readlnOrNull()?.toInt()
-        print("Enter column number: ")
-        val col: Int? = readlnOrNull()?.toInt()
-        if (row != null && col != null) {
-            game.placePiece(row, col, currentPlayer)
+
+        var row: Int? = -1
+        var col: Int? = -1
+
+        var validMove: Boolean = false
+        while (!validMove) {
+            try {
+                print("Enter row number: ")
+                row = readlnOrNull()?.toInt()
+                print("Enter column number: ")
+                col = readlnOrNull()?.toInt()
+
+                if (row != null && col != null
+                    && game.isValidMove(row, col)) {
+                    validMove = true
+                    game.placePiece(row, col, currentPlayer)
+                }else {
+                    println("Invalid position")
+                    println("Try again!")
+                    continue
+                }
+            } catch (e: NumberFormatException) {
+                println("You did not enter a number")
+                println("Try again!")
+            }
         }
+
         if (game.isGameOver) {
             println("New game? Type 'yes' or 'no'")
             val answer: String? = readlnOrNull()
