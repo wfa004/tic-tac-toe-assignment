@@ -42,18 +42,16 @@ class TicTacToeGame(): Game(size = 3) {
 
             if (isGameOver) {
                 println("New game? Type 'yes' or 'no'")
-                val answer: String? = readlnOrNull()
-                if (answer != null) {
-                    if (isPlayingAgain(answer)) {
-                        resetGame()
-                        printGameBoard()
-                    } else {
-                        println("Exiting game...")
+                val answer = readln()
+                if (isPlayingAgain(answer)) {
+                    resetGame()
+                    printGameBoard()
+                } else {
+                    println("Exiting game...")
                     }
                 }
             }
         }
-    }
 
     private fun isPlayingAgain(answer: String): Boolean {
         return (answer.equals("y", ignoreCase = true) || answer.equals("yes", ignoreCase = true))
