@@ -1,43 +1,100 @@
 import kotlin.math.pow
 
-class TicTacToeGame() {
+class TicTacToeGame(): Game(size = 3) {
+    private val player1 = Player("X")
+    private val player2 = Player("O")
 
-    private var size = 3
-    private val empty = "___"
-    private var moveCount = 0
-    var isGameOver = false
-    private var gameBoard = GameBoard(size).boardAsArrays()
+    private var  currentPlayer = player1
+    private var row: Int = -1
+    private var col: Int = -1
+    private var validMove: Boolean = false
+    private var answer: String = ""
 
-    private fun checkRows(x: Int, y: Int, piece: String): Int {
+    init {
+        startGame()
+    }
+
+    private fun startGame(){
+        printGameBoard()
+        while (!isGameOver) {
+            validMove = false
+            while (!validMove) {
+                println("${currentPlayer.mark}'s turn")
+                try {
+                    print("Enter row number: ")
+                    row = readln().toInt()
+                    print("Enter column number: ")
+                    col = readln().toInt()
+
+                    if (isValidMove()) {
+                        validMove = true
+                        placePiece()
+                        takeTurns()
+                    }else {
+                        println("Invalid position")
+                        println("Try again!")
+                        continue
+                    }
+                } catch (e: NumberFormatException) {
+                    println("You did not enter a number")
+                    println("Try again!")
+                }
+
+            }
+
+            if (isGameOver) {
+                println("New game? Type 'yes' or 'no'")
+                answer = readln()
+                if (isPlayingAgain()) {
+                    resetGame()
+                    printGameBoard()
+                } else {
+                    println("Exiting game...")
+                    }
+                }
+            }
+        }
+
+    private fun isPlayingAgain(): Boolean {
+        return (answer.equals("y", ignoreCase = true) || answer.equals("yes", ignoreCase = true))
+    }
+    private fun takeTurns() {
+        currentPlayer = if (currentPlayer == player1) {
+            player2
+        } else {
+            player1
+        }
+    }
+    private fun checkRows(): Int {
         for (i in 0 until size) {
-            if (gameBoard[x][i] != piece) {
+            if (gameBoard[row][i] != currentPlayer.mark) {
                 break
             }
             if (i == size - 1) {
-                return x
+                return row
             }
         }
         return -1
     }
 
-    private fun checkColumns(x: Int, y: Int, piece: String): Int {
+    private fun checkColumns(): Int {
         for (i in 0 until size) {
-            if (gameBoard[i][y] != piece) {
+            if (gameBoard[i][col] != currentPlayer.mark) {
                 break
             }
             if (i == size - 1) {
-                return y
+                return col
             }
         }
         return -1
     }
 
 
-    private fun checkDiagonals(x: Int, y: Int, piece: String): Int {
+    private fun checkDiagonals(): Int {
         //check diagonal
-        if (x == y) {
+        if (row == col) {
             for (i in 0 until size) {
-                if (gameBoard[i][i] != piece) {
+                if (gameBoard[i][i] != currentPlayer.mark) {
                     break
                 }
                 if (i == size - 1) {
@@ -47,9 +104,9 @@ class TicTacToeGame() {
             }
         }
         //check anti diagonal
-        if (x + y == size - 1) {
+        if (row + col == size - 1) {
             for (i in 0 until size) {
-                if (gameBoard[i][(size - 1)] != piece) {
+                if (gameBoard[i][(size - 1)] != currentPlayer.mark) {
                     break
                 }
                 if (i == size - 1) {
@@ -61,7 +118,7 @@ class TicTacToeGame() {
         return -1
     }
 
-    fun printGameBoard() {
+    private fun printGameBoard() {
         println("  0    1    2")
         var colNr = 0
         gameBoard.forEach { row ->
@@ -80,25 +137,26 @@ class TicTacToeGame() {
         println()
     }
 
-    fun placePiece(x: Int, y: Int, piece: String) {
+    private fun placePiece() {
         if (!isGameOver) {
             moveCount++
-            gameBoard[x][y] = piece
+            gameBoard[row][col] = currentPlayer.mark
             printGameBoard()
             isGameOver =
-                checkRows(x, y, piece) != -1 || checkColumns(x, y, piece) != -1 || checkDiagonals(x, y, piece) != -1 || isDraw()
+                checkRows() != -1 || checkColumns() != -1 || checkDiagonals() != -1 || isDraw()
             if (isGameOver && !isDraw()) {
                 println("We have a winner!")
+                println("${currentPlayer.mark} is the winner!")
             } else if (isDraw()) {
                 println("Draw!")
             }
-        } else if (gameBoard[x][y] != empty) {
+        } else if (gameBoard[row][col] != empty) {
             println("Position is already occupied")
     }
         }
 
-    fun isValidMove(x: Int, y: Int): Boolean {
-        return ((x in 0 until size) && (y in 0 until size) && (gameBoard[x][y] == empty))
+    private fun isValidMove(): Boolean {
+        return ((row in 0 until size) && (col in 0 until size) && (gameBoard[row][col] == empty))
     }
 
     private fun isDraw(): Boolean {
@@ -109,14 +167,11 @@ class TicTacToeGame() {
         gameBoard = GameBoard(size).boardAsArrays()
     }
 
-    fun resetGame() {
+    private fun resetGame() {
         resetBoard()
         isGameOver = false
         moveCount = 0
+        validMove = false
+        currentPlayer = player1
     }
-
-
-//
-//    fun isValidMove(row: Int, column: Int, player: Int)
-
 }
