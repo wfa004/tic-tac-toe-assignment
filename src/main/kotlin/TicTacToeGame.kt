@@ -17,9 +17,9 @@ class TicTacToeGame(): Game(size = 3) {
     private fun startGame(){
         printGameBoard()
         while (!isGameOver) {
-            takeTurns()
             validMove = false
             while (!validMove) {
+                println("${currentPlayer.mark}'s turn")
                 try {
                     print("Enter row number: ")
                     row = readln().toInt()
@@ -29,6 +29,7 @@ class TicTacToeGame(): Game(size = 3) {
                     if (isValidMove()) {
                         validMove = true
                         placePiece()
+                        takeTurns()
                     }else {
                         println("Invalid position")
                         println("Try again!")
@@ -38,12 +39,13 @@ class TicTacToeGame(): Game(size = 3) {
                     println("You did not enter a number")
                     println("Try again!")
                 }
+
             }
 
             if (isGameOver) {
                 println("New game? Type 'yes' or 'no'")
-                val answer = readln()
-                if (isPlayingAgain(answer)) {
+                answer = readln()
+                if (isPlayingAgain()) {
                     resetGame()
                     printGameBoard()
                 } else {
@@ -53,7 +55,7 @@ class TicTacToeGame(): Game(size = 3) {
             }
         }
 
-    private fun isPlayingAgain(answer: String): Boolean {
+    private fun isPlayingAgain(): Boolean {
         return (answer.equals("y", ignoreCase = true) || answer.equals("yes", ignoreCase = true))
     }
     private fun takeTurns() {
@@ -62,7 +64,6 @@ class TicTacToeGame(): Game(size = 3) {
         } else {
             player1
         }
-        println("${currentPlayer.mark}'s turn")
     }
     private fun checkRows(): Int {
         for (i in 0 until size) {
@@ -170,5 +171,7 @@ class TicTacToeGame(): Game(size = 3) {
         resetBoard()
         isGameOver = false
         moveCount = 0
+        validMove = false
+        currentPlayer = player1
     }
 }
