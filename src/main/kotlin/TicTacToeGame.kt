@@ -1,13 +1,17 @@
 import kotlin.math.pow
 
-class TicTacToeGame() {
-
-    private var size = 3
-    private val empty = "___"
-    private var moveCount = 0
-    var isGameOver = false
-    private var gameBoard = GameBoard(size).boardAsArrays()
-
+class TicTacToeGame(): Game(size = 3) {
+    private val player1 = Player("X")
+    private val player2 = Player("O")
+    private var  currentPlayer = player1
+    fun takeTurns() {
+        currentPlayer = if (currentPlayer == player1) {
+            player2
+        } else {
+            player1
+        }
+        println("${currentPlayer.mark}'s turn")
+    }
     private fun checkRows(x: Int, y: Int, piece: String): Int {
         for (i in 0 until size) {
             if (gameBoard[x][i] != piece) {
@@ -80,15 +84,16 @@ class TicTacToeGame() {
         println()
     }
 
-    fun placePiece(x: Int, y: Int, piece: String) {
+    fun placePiece(x: Int, y: Int) {
         if (!isGameOver) {
             moveCount++
-            gameBoard[x][y] = piece
+            gameBoard[x][y] = currentPlayer.mark
             printGameBoard()
             isGameOver =
-                checkRows(x, y, piece) != -1 || checkColumns(x, y, piece) != -1 || checkDiagonals(x, y, piece) != -1 || isDraw()
+                checkRows(x, y, currentPlayer.mark) != -1 || checkColumns(x, y, currentPlayer.mark) != -1 || checkDiagonals(x, y, currentPlayer.mark) != -1 || isDraw()
             if (isGameOver && !isDraw()) {
                 println("We have a winner!")
+                println("${currentPlayer.mark} is the winner!")
             } else if (isDraw()) {
                 println("Draw!")
             }
