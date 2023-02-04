@@ -1,6 +1,6 @@
 import kotlin.math.pow
 
-class TicTacToeGame(): Game(size = 3) {
+class TicTacToeGame : Game(size = 3) {
     private val player1 = Player("X")
     private val player2 = Player("O")
 
@@ -45,19 +45,19 @@ class TicTacToeGame(): Game(size = 3) {
             if (isGameOver) {
                 println("New game? Type 'yes' or 'no'")
                 answer = readln()
-                if (isPlayingAgain()) {
+                val isPlayingAgain = { answer: String ->
+                    answer.lowercase() in listOf("yes", "y")
+                }
+                if (isPlayingAgain(answer)) {
                     resetGame()
                     printGameBoard()
                 } else {
                     println("Exiting game...")
-                    }
                 }
             }
         }
-
-    private fun isPlayingAgain(): Boolean {
-        return (answer.equals("y", ignoreCase = true) || answer.equals("yes", ignoreCase = true))
     }
+
     private fun takeTurns() {
         currentPlayer = if (currentPlayer == player1) {
             player2
@@ -102,11 +102,14 @@ class TicTacToeGame(): Game(size = 3) {
                     return 1
                 }
             }
-        }
-        //check anti diagonal
-        if (row + col == size - 1) {
+        } ;return -1
+    }
+
+    private fun checkDiagonals2(): Int {
+        // check the other diagonal
+        if (row == size - col - 1) {
             for (i in 0 until size) {
-                if (gameBoard[i][(size - 1)] != currentPlayer.mark) {
+                if (gameBoard[i][size - i - 1] != currentPlayer.mark) {
                     break
                 }
                 if (i == size - 1) {
@@ -114,8 +117,7 @@ class TicTacToeGame(): Game(size = 3) {
                     return 2
                 }
             }
-        }
-        return -1
+        } ;return -1
     }
 
     private fun printGameBoard() {
@@ -143,7 +145,7 @@ class TicTacToeGame(): Game(size = 3) {
             gameBoard[row][col] = currentPlayer.mark
             printGameBoard()
             isGameOver =
-                checkRows() != -1 || checkColumns() != -1 || checkDiagonals() != -1 || isDraw()
+                checkRows() != -1 || checkColumns() != -1 || checkDiagonals() != -1 || checkDiagonals2() != -1 || isDraw()
             if (isGameOver && !isDraw()) {
                 println("We have a winner!")
                 println("${currentPlayer.mark} is the winner!")
